@@ -1,1 +1,15 @@
-
+{
+  "name": "nurugrowth-ai-poster",
+  "version": "1.0.0",
+  "description": "AI-powered social media content generator for Kingdom-aligned mom-focused posts",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "vite": "^5.1.0"
+  }
+}
