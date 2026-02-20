@@ -3,84 +3,536 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>NuruGrowth AI Poster</title>
+	<title>NuruGrowth AI Poster Studio</title>
 	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
 		body {
-			font-family: system-ui, -apple-system, sans-serif;
-			max-width: 700px;
-			margin: 40px auto;
-			padding: 0 16px;
-			line-height: 1.5;
-			color: #1a202c;
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+			background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+			min-height: 100vh;
+			padding: 20px;
+			color: #2c3e50;
 		}
-		h1 {
+
+		.container {
+			max-width: 1000px;
+			margin: 0 auto;
+		}
+
+		header {
 			text-align: center;
-			font-size: 1.8rem;
-			margin-bottom: 24px;
+			margin-bottom: 40px;
 		}
-		button {
+
+		.logo {
+			font-size: 28px;
+			font-weight: 700;
+			color: #16a34a;
+			margin-bottom: 8px;
+		}
+
+		h1 {
+			font-size: 32px;
+			font-weight: 600;
+			color: #1f2937;
+			margin-bottom: 8px;
+		}
+
+		.tagline {
+			font-size: 16px;
+			color: #6b7280;
+			line-height: 1.6;
+		}
+
+		.main {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 24px;
+			margin-bottom: 32px;
+		}
+
+		.card {
+			background: white;
+			border-radius: 12px;
+			padding: 32px;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+			transition: box-shadow 0.3s ease;
+		}
+
+		.card:hover {
+			box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+		}
+
+		.card h2 {
+			font-size: 20px;
+			font-weight: 600;
+			margin-bottom: 20px;
+			color: #1f2937;
+		}
+
+		.form-group {
+			margin-bottom: 18px;
+		}
+
+		label {
 			display: block;
-			margin: 0 auto 24px;
-			padding: 12px 24px;
+			font-size: 14px;
+			font-weight: 500;
+			color: #4b5563;
+			margin-bottom: 6px;
+		}
+
+		select, input, textarea {
+			width: 100%;
+			padding: 10px 12px;
+			border: 1px solid #e5e7eb;
+			border-radius: 8px;
+			font-size: 14px;
+			font-family: inherit;
+			transition: border-color 0.3s, box-shadow 0.3s;
+		}
+
+		select:focus, input:focus, textarea:focus {
+			outline: none;
+			border-color: #16a34a;
+			box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
+		}
+
+		textarea {
+			resize: vertical;
+			min-height: 80px;
+		}
+
+		.button-group {
+			display: flex;
+			gap: 12px;
+			margin-top: 24px;
+		}
+
+		button {
+			flex: 1;
+			padding: 12px 20px;
+			font-size: 15px;
+			font-weight: 600;
+			border: none;
+			border-radius: 8px;
+			cursor: pointer;
+			transition: all 0.3s ease;
+		}
+
+		.btn-primary {
+			background: #16a34a;
+			color: white;
+		}
+
+		.btn-primary:hover:not(:disabled) {
+			background: #15803d;
+			transform: translateY(-2px);
+			box-shadow: 0 6px 12px rgba(22, 163, 74, 0.3);
+		}
+
+		.btn-primary:disabled {
+			background: #86efac;
+			cursor: not-allowed;
+		}
+
+		.btn-secondary {
+			background: #e5e7eb;
+			color: #374151;
+		}
+
+		.btn-secondary:hover {
+			background: #d1d5db;
+		}
+
+		.btn-copy {
+			background: #f3f4f6;
+			color: #6b7280;
+			padding: 8px 12px;
+			font-size: 13px;
+		}
+
+		.btn-copy:hover {
+			background: #e5e7eb;
+		}
+
+		.output-section h3 {
 			font-size: 16px;
 			font-weight: 600;
-			background: #3182ce;
-			color: white;
-			border: none;
-			border-radius: 6px;
-			cursor: pointer;
-			transition: background 0.2s;
+			margin-bottom: 12px;
+			color: #1f2937;
 		}
-		button:hover {
-			background: #2c5282;
-		}
-		#output {
-			min-height: 80px;
+
+		.post-preview {
+			background: #f9fafb;
+			border-left: 4px solid #16a34a;
 			padding: 16px;
-			background: #f8fafc;
-			border-radius: 8px;
-			border: 1px solid #e2e8f0;
+			border-radius: 6px;
+			line-height: 1.6;
+			color: #374151;
+			margin-bottom: 16px;
 			white-space: pre-wrap;
+			word-wrap: break-word;
+		}
+
+		.post-meta {
+			display: flex;
+			gap: 8px;
+			margin-bottom: 12px;
+			flex-wrap: wrap;
+		}
+
+		.tag {
+			display: inline-block;
+			background: #dbeafe;
+			color: #1e40af;
+			padding: 4px 10px;
+			border-radius: 20px;
+			font-size: 12px;
+			font-weight: 500;
+		}
+
+		.history {
+			margin-top: 24px;
+		}
+
+		.history-item {
+			background: #f9fafb;
+			padding: 12px;
+			border-radius: 6px;
+			margin-bottom: 8px;
+			border-left: 3px solid #16a34a;
+			cursor: pointer;
+			transition: all 0.2s;
+		}
+
+		.history-item:hover {
+			background: #f3f4f6;
+		}
+
+		.history-item-text {
+			font-size: 14px;
+			color: #374151;
+			line-height: 1.4;
+		}
+
+		.history-item-time {
+			font-size: 12px;
+			color: #9ca3af;
+			margin-top: 4px;
+		}
+
+		.status {
+			padding: 12px;
+			border-radius: 8px;
+			margin-bottom: 16px;
+			font-size: 14px;
+		}
+
+		.status.loading {
+			background: #fef3c7;
+			color: #92400e;
+		}
+
+		.status.success {
+			background: #dcfce7;
+			color: #166534;
+		}
+
+		.status.error {
+			background: #fee2e2;
+			color: #991b1b;
+		}
+
+		.empty-state {
+			text-align: center;
+			padding: 24px;
+			color: #9ca3af;
+		}
+
+		@media (max-width: 768px) {
+			.main {
+				grid-template-columns: 1fr;
+			}
+
+			h1 {
+				font-size: 24px;
+			}
+
+			.card {
+				padding: 20px;
+			}
+
+			.button-group {
+				flex-direction: column;
+			}
 		}
 	</style>
 </head>
 <body>
-	<h1>Your AI Poster</h1>
-	<button id="generate">Generate with AI</button>
-	<div id="output">Click the button to create a Kingdom-aligned poster for moms.</div>
+	<div class="container">
+		<header>
+			<div class="logo">🌱 NuruGrowth</div>
+			<h1>AI Poster Studio</h1>
+			<p class="tagline">Create Kingdom-aligned social media content for moms & families</p>
+		</header>
 
-	<script>
-		document.getElementById('generate').addEventListener('click', async () => {
-			// ✅ Define input variables (no undefined errors)
-			const brand = 'NuruGrowth';
-			const industry = 'Marketing Agency';
-			const values = 'Sincerity, Efficiency, Faith';
-			const tone = 'warm and relatable for moms';
+		<div class="main">
+			<div class="card">
+				<h2>Create New Post</h2>
 
-			const outputDiv = document.getElementById('output');
-			outputDiv.innerText = 'Generating...';
+				<div class="form-group">
+					<label for="platform">Platform</label>
+					<select id="platform">
+						<option value="instagram">Instagram</option>
+						<option value="facebook">Facebook</option>
+						<option value="tiktok">TikTok</option>
+						<option value="twitter">Twitter/X</option>
+						<option value="linkedin">LinkedIn</option>
+					</select>
+				</div>
+
+				<div class="form-group">
+					<label for="theme">Post Theme</label>
+					<select id="theme">
+						<option value="">-- Select a theme --</option>
+						<option value="clean energy for families">Clean Energy for Families</option>
+						<option value="solar savings tips">Solar Savings Tips</option>
+						<option value="sustainable living">Sustainable Living</option>
+						<option value="family health benefits">Family Health Benefits</option>
+						<option value="energy independence">Energy Independence</option>
+						<option value="community impact">Community Impact</option>
+						<option value="faith and sustainability">Faith & Sustainability</option>
+						<option value="budget-friendly solutions">Budget-Friendly Solutions</option>
+					</select>
+				</div>
+
+				<div class="form-group">
+					<label for="tone">Tone</label>
+					<select id="tone">
+						<option value="warm and encouraging">Warm & Encouraging</option>
+						<option value="practical and helpful">Practical & Helpful</option>
+						<option value="inspiring and motivational">Inspiring & Motivational</option>
+						<option value="playful and fun">Playful & Fun</option>
+						<option value="authentic and vulnerable">Authentic & Vulnerable</option>
+						<option value="community-focused">Community-Focused</option>
+					</select>
+				</div>
+
+				<div class="form-group">
+					<label for="context">Additional Context (optional)</label>
+					<textarea id="context" placeholder="Any specific details or target audience..."></textarea>
+				</div>
+
+				<div class="button-group">
+					<button class="btn-primary" id="generate">Generate Post</button>
+					<button class="btn-secondary" id="clear">Clear</button>
+				</div>
+			</div>
+
+			<div class="card">
+				<h2>Generated Post</h2>
+
+				<div id="status"></div>
+
+				<div id="output" style="display: none;">
+					<div class="output-section">
+						<h3>Your Post</h3>
+						<div class="post-preview" id="postContent"></div>
+
+						<div class="post-meta">
+							<span class="tag" id="platformTag"></span>
+							<span class="tag" id="themeTag"></span>
+							<span class="tag" id="toneTag"></span>
+						</div>
+
+						<button class="btn-copy" id="copyBtn">Copy to Clipboard</button>
+					</div>
+
+					<div class="history">
+						<h3>Recent Posts</h3>
+						<div id="recentPosts" class="empty-state">No posts generated yet</div>
+					</div>
+				</div>
+
+				<div id="noOutput" class="empty-state">
+					Fill in your preferences and click "Generate Post" to create AI-powered content.
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="module">
+		import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/+esm';
+
+		const SUPABASE_URL = 'https://0ec90b57d6e95fcbda19832f.supabase.co';
+		const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJib2x0IiwicmVmIjoiMGVjOTBiNTdkNmU5NWZjYmRhMTk4MzJmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg4ODE1NzQsImV4cCI6MTc1ODg4MTU3NH0.9I8-U0x86Ak8t2DGaIk0HfvTSLsAyzdnz-Nw00mMkKw';
+
+		const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+		let recentPostsData = [];
+
+		const elements = {
+			platform: document.getElementById('platform'),
+			theme: document.getElementById('theme'),
+			tone: document.getElementById('tone'),
+			context: document.getElementById('context'),
+			generateBtn: document.getElementById('generate'),
+			clearBtn: document.getElementById('clear'),
+			status: document.getElementById('status'),
+			output: document.getElementById('output'),
+			noOutput: document.getElementById('noOutput'),
+			postContent: document.getElementById('postContent'),
+			platformTag: document.getElementById('platformTag'),
+			themeTag: document.getElementById('themeTag'),
+			toneTag: document.getElementById('toneTag'),
+			copyBtn: document.getElementById('copyBtn'),
+			recentPosts: document.getElementById('recentPosts'),
+		};
+
+		function showStatus(message, type = 'loading') {
+			elements.status.className = `status ${type}`;
+			elements.status.textContent = message;
+		}
+
+		function hideStatus() {
+			elements.status.className = 'status';
+			elements.status.textContent = '';
+		}
+
+		async function generatePost() {
+			if (!elements.theme.value) {
+				showStatus('Please select a post theme', 'error');
+				return;
+			}
+
+			elements.generateBtn.disabled = true;
+			showStatus('Creating your post...', 'loading');
 
 			try {
-				// ✅ Fixed URL: no trailing spaces
-				const res = await fetch('https://nurugrowth-ai.vercel.app/api/generate', {
+				const response = await fetch('/api/generate', {
 					method: 'POST',
 					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify({ brand, industry, values, tone })
+					body: JSON.stringify({
+						platform: elements.platform.value,
+						theme: elements.theme.value,
+						tone: elements.tone.value,
+						additionalContext: elements.context.value,
+					})
 				});
 
-				if (!res.ok) {
-					const errorText = await res.text();
-					throw new Error(`Server error ${res.status}: ${errorText}`);
+				if (!response.ok) {
+					throw new Error('Failed to generate post');
 				}
 
-				const data = await res.json();
-				outputDiv.innerText = data.text || 'No content generated.';
+				const data = await response.json();
+
+				elements.postContent.textContent = data.text;
+				elements.platformTag.textContent = data.platform;
+				elements.themeTag.textContent = data.theme;
+				elements.toneTag.textContent = data.tone;
+
+				elements.noOutput.style.display = 'none';
+				elements.output.style.display = 'block';
+
+				await savePost(data.text, data.platform, data.theme, data.tone);
+				await loadRecentPosts();
+
+				hideStatus();
+				showStatus('Post created successfully!', 'success');
+				setTimeout(hideStatus, 3000);
 
 			} catch (error) {
-				console.error('Generation failed:', error);
-				outputDiv.innerText = '⚠️ Oops! Could not generate. Please try again.';
+				console.error('Error:', error);
+				showStatus('Failed to generate post. Try again.', 'error');
+			} finally {
+				elements.generateBtn.disabled = false;
 			}
+		}
+
+		async function savePost(content, platform, theme, tone) {
+			try {
+				await supabase.from('posts').insert({
+					content,
+					platform,
+					theme,
+					tone,
+				});
+			} catch (error) {
+				console.error('Save error:', error);
+			}
+		}
+
+		async function loadRecentPosts() {
+			try {
+				const { data, error } = await supabase
+					.from('posts')
+					.select('id, content, platform, theme, created_at')
+					.order('created_at', { ascending: false })
+					.limit(5);
+
+				if (error) throw error;
+
+				recentPostsData = data || [];
+				renderRecentPosts();
+			} catch (error) {
+				console.error('Load error:', error);
+			}
+		}
+
+		function renderRecentPosts() {
+			if (recentPostsData.length === 0) {
+				elements.recentPosts.innerHTML = '<div class="empty-state">No saved posts yet</div>';
+				return;
+			}
+
+			elements.recentPosts.innerHTML = recentPostsData.map(post => `
+				<div class="history-item" onclick="loadPost('${post.id}')">
+					<div class="history-item-text">${post.content.substring(0, 80)}...</div>
+					<div class="history-item-time">${new Date(post.created_at).toLocaleDateString()} • ${post.platform}</div>
+				</div>
+			`).join('');
+		}
+
+		window.loadPost = function(postId) {
+			const post = recentPostsData.find(p => p.id === postId);
+			if (post) {
+				elements.postContent.textContent = post.content;
+				elements.platformTag.textContent = post.platform;
+				elements.themeTag.textContent = post.theme;
+				elements.toneTag.textContent = 'Previously generated';
+			}
+		};
+
+		elements.generateBtn.addEventListener('click', generatePost);
+
+		elements.clearBtn.addEventListener('click', () => {
+			elements.platform.value = 'instagram';
+			elements.theme.value = '';
+			elements.tone.value = 'warm and encouraging';
+			elements.context.value = '';
+			elements.noOutput.style.display = 'block';
+			elements.output.style.display = 'none';
+			hideStatus();
 		});
+
+		elements.copyBtn.addEventListener('click', () => {
+			const text = elements.postContent.textContent;
+			navigator.clipboard.writeText(text).then(() => {
+				elements.copyBtn.textContent = 'Copied!';
+				setTimeout(() => {
+					elements.copyBtn.textContent = 'Copy to Clipboard';
+				}, 2000);
+			});
+		});
+
+		loadRecentPosts();
+		setInterval(loadRecentPosts, 30000);
 	</script>
 </body>
 </html>
