@@ -2,7 +2,7 @@
   # Generate Post Edge Function
 
   1. Purpose
-    - Generate AI-powered social media content using OpenRouter API
+    - Generate AI-powered social media content using LFM API
     - Handle content generation requests from the frontend
     - Store generated posts in the database
 
@@ -61,7 +61,7 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    const apiKey = Deno.env.get('OPENROUTER_API_KEY');
+    const apiKey = Deno.env.get('LFM_API_KEY');
     if (!apiKey) {
       return new Response(
         JSON.stringify({ error: "API key not configured" }),
@@ -92,14 +92,14 @@ Post requirements:
 - Include 1-2 relevant hashtags at end
 - No generic AI language`;
 
-    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    const response = await fetch('https://api.lfm.dev/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'meta-llama/llama-3.1-8b-instruct',
+        model: 'gpt-3.5-turbo',
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: userPrompt }
@@ -111,7 +111,7 @@ Post requirements:
 
     if (!response.ok) {
       const error = await response.text();
-      throw new Error(`OpenRouter error: ${error}`);
+      throw new Error(`LFM API error: ${error}`);
     }
 
     const data = await response.json();
